@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Note
+{% endblock %}
+    
+{% block content %}
+    <div class='d-flex align-items-center justif y-content-center'>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{note.title}}</h5>                
+                <p class="card-text">{{note.content}}</p>
+            </div>
+            <div>
+                <a href="{% url 'edit' note.id %}" class="btn btn-outline-primary">Edit</a>
+                <a href="{% url 'toggle_bin' note.id %}" class="btn btn-outline-secondary">
+                    {% if n.in_bin %}
+                        Restore
+                    {% else %}
+                        Move to bin
+                    {% endif %}
+                </a>
+            </div>
+            <div>
+                <a href="{% url 'export_pdf' note.id %}" class="btn btn-secondary">Export as PDF</a>
+                <a href="{% url 'export_txt' note.id %}" class="btn btn-secondary">Export as Text</a>
+            </div>
+            <div>
+                Share:
+                <a href="http://127.0.0.1:8000/share/{{ note.share_uuid }}">
+                    http://127.0.0.1:8000/share/{{ note.share_uuid }}
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

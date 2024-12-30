@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Bin
+{% endblock %}
+
+{% block content %}
+    <div class="pb-3">
+        <h3>Bin</h3>       
+    </div>
+    <div style="display: flex; justify-content: flex-end">
+        <a href="{% url 'list' %}" class="btn btn-outline-danger">Back to Notes</a>
+    </div>
+    <hr>
+    <div class="text-center">
+        <form action="" method="get">
+            {% csrf_token %}
+            <input type="text" name="query" placeholder="Search keyword">
+            <input type="date" name="date" placeholder="Search by date">
+            <button type="submit" class="btn btn-outline-secondary">Search</button>
+        </form>
+    </div>
+    <hr>
+    <div style="display: flex; justify-content: flex-end">
+        <form action="" method="get" onchange="this.submit()">
+            <select name="sort_by">
+                <option value="title" {% if sort_by == 'title' %}selected{% endif %}>Title</option>
+                <option value="created_at" {% if sort_by == 'created_at' %}selected{% endif %}>Time</option> 
+            </select>
+            <select name="order_by" onchange="this.submit()">
+                <option value="asc" {% if order_by == 'asc' %}selected{% endif %}>Ascending</option>
+                <option value="desc" {% if order_by == 'desc' %}selected{% endif %}>Descending</option>
+            </select>
+        </form>
+    </div>
+    <div class='container row gap-3'>
+    {% for n in note %}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <a href="{% url 'detail' n.id %}" class="btn">
+                    <h5 class="card-title">{{n.title}}</h5>
+                </a>
+                <p class="card-text">{{n.content | truncatechars:10}}</p>
+                <a href="{% url 'delete' n.id %}" class="btn btn-outline-danger">Delete</a>
+                <a href="{% url 'toggle_bin' n.id %}" class="btn btn-outline-secondary">
+                    {% if n.in_bin %}
+                        Restore
+                    {% else %}
+                        Move to bin
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

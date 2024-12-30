@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Sign Up
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="btn btn-outline-success">Sign Up</button>
+        <button type="reset" class="btn btn-outline-primary">Reset</button>
+        <div>
+            Already have an account? <a href="{% url 'sign_in' %}" class="btn btn-outline-primary">Sign In</a>
+        </div>
+    </form>
+{% endblock %}

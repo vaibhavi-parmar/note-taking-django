@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Sign In
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div>
+            {{form.as_p}}
+        </div>
+        <button type="submit" class="btn btn-outline-success">Sign In</button>
+        <button type="reset" class="btn btn-outline-primary">Reset</button>
+        <div>
+            Don't have an account? <a href="{% url 'sign_up' %}" class="btn btn-outline-primary">Sign Up</a>
+        </div>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all the radio buttons for login_type
+            const loginTypeRadios = document.querySelectorAll('input[name="login_type"]');
+            const usernameField = document.getElementById('id_username');
+            const emailField = document.getElementById('id_email');
+            
+            // Function to toggle the disabled state of the fields based on the selected login type
+            function toggleFields() {
+                const selectedLoginType = document.querySelector('input[name="login_type"]:checked').value;    
+
+                // Disable the appropriate field based on the selected radio button
+                if (selectedLoginType === 'username') {
+                    emailField.disabled = true;  // Disable the email field
+                    usernameField.disabled = false;
+                } else  {
+                    usernameField.disabled = true;  // Disable the username field
+                    emailField.disabled = false;
+                }
+            }
+
+            // Add event listeners to the radio buttons to trigger the field disabling when selected
+            loginTypeRadios.forEach(radio => {
+                radio.addEventListener('change', toggleFields);
+            });
+
+            // Call the toggle function initially to set the correct disabled state on page load
+            toggleFields();
+        });
+    </script>
+
+{% endblock %}

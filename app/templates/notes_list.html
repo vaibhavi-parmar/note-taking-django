@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+    <div class="pb-3">
+        {% if session %}
+            Welcome <strong>{{session}}</strong>!
+        {% endif %}        
+    </div>
+    <div style="display: flex; justify-content: flex-end">
+        <a href="{% url 'sign_out' %}" class="btn btn-outline-danger">Sign out</a>
+    </div>
+    <a href="{% url 'create' %}" class="btn btn-outline-primary">Create Note</a>
+    <hr>
+    <div class="text-center">
+        <form action="" method="get">
+            {% csrf_token %}
+            <input type="text" name="query" placeholder="Search keyword">
+            <input type="date" name="date" placeholder="Search by date">
+            <button type="submit" class="btn btn-outline-secondary">Search</button>
+        </form>
+    </div>
+    <hr>
+    <div style="display: flex; justify-content: flex-end">
+        <form action="" method="get" onchange="this.submit()">
+            <select name="sort_by">
+                <option value="title" {% if sort_by == 'title' %}selected{% endif %}>Title</option>
+                <option value="created_at" {% if sort_by == 'created_at' %}selected{% endif %}>Time</option> 
+            </select>
+            <select name="order_by" onchange="this.submit()">
+                <option value="asc" {% if order_by == 'asc' %}selected{% endif %}>Ascending</option>
+                <option value="desc" {% if order_by == 'desc' %}selected{% endif %}>Descending</option>
+            </select>
+        </form>
+    </div>
+    <div class='container row gap-3'>
+    {% for n in note %}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <a href="{% url 'detail' n.id %}" class="btn">
+                    <h5 class="card-title">{{n.title}}</h5>
+                </a>
+                <p class="card-text">{{n.content | truncatechars:10}}</p>
+                <a href="{% url 'toggle_pin' n.id %}" class="btn btn-outline-warning">
+                    {% if n.is_pinned %}
+                        Unpin
+                    {% else %}
+                        Pin
+                    {% endif %}
+                </a>
+                <a href="{% url 'toggle_archive' n.id %}" class="btn btn-outline-info">
+                    {% if n.is_archived %}
+                        Unarchive
+                    {% else %}
+                        Archive
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="d-flex flex-row-reverse">
+        <a class="p-2 btn btn-outline-danger" href="{% url 'bin' %}">Bin</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'archive' %}">Archive</a>
+    </div>
+{% endblock %}

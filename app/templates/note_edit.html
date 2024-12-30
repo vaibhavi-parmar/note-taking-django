@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Edit
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="btn btn-outline-success">Save</button>
+        <a href="{% url 'detail' note.id %}" class="btn btn-outline-danger">Cancel</a>
+    </form>
+{% endblock %}
